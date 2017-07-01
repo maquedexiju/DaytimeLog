@@ -29,7 +29,7 @@ class ReportView(AdaptView):
 
     def ExportLog(self,instance=None):
         filePath=self.BASEPATH+'tmp.csv'
-        with open(filePath, 'w') as csvFile:
+        with open(filePath, 'w',encoding='utf-8') as csvFile:
             fieldNames=['Tag','Total Time(Hour)','Content','Time(Hour)']
             writer=csv.DictWriter(csvFile, fieldnames=fieldNames)
             writer.writeheader()

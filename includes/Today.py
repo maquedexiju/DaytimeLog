@@ -12,9 +12,6 @@ import csv
 import platform
 import subprocess
 
-#global BASEPATH
-
-#Builder.load_file('includes/Controls/Timer.kv')
 Builder.load_file('includes/Today.kv')
 
 class TodayView(AdaptView):
@@ -39,14 +36,13 @@ class TodayView(AdaptView):
     def ExportLog(self,instance=None):
         data=self.log.GetLog()
         filePath=self.BASEPATH+'tmp.csv'
-        with open(filePath, 'w') as csvFile:
-            fieldNames=['ID', ''''Date',''' 'Start Time','Duration','Tag','Content']
+        with open(filePath,'w',encoding='utf-8') as csvFile:
+            fieldNames=['ID', 'Start Time','Duration','Tag','Content']
             writer=csv.DictWriter(csvFile, fieldnames=fieldNames)
             writer.writeheader()
             writer.writerow({'ID':data[0]['day']})
             for record in data:
                 writer.writerow({'ID':record['id'],\
-                #'Date':record['day'],\
                 'Start Time':record['time'],\
                 'Duration':record['duration'],\
                 'Tag':record['tag'],\
@@ -58,17 +54,9 @@ class TodayView(AdaptView):
                 subprocess.call(["xdg-open", filePath])
             elif sys=='Darwin':
                 subprocess.call(["open", filePath])
-    '''
-    def EditLog(self,*args):
-        self.menu.EnterEdit()
-        self.log.EnterEdit()
-
-    def LeaveEdit(self):
-        self.log.LeaveEdit()
-    '''
 
     def Refresh(self):
-        now=date.today()-timedelta(days=1)
+        now=date.today()
         if self.date!=datetime.strftime(now,'%Y-%m-%d'):
             LogThisDay=self.DB.SearchDate(now)
             self.date=datetime.strftime(now,'%Y-%m-%d')

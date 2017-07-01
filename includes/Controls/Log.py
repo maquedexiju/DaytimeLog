@@ -50,13 +50,11 @@ class Log(RelativeLayout):
             if logOneDay.id!=self.title.date.text:
                 self.logAll.remove_widget(logOneDay)
             else :
-                print('logAllDay in enter edit',logOneDay.id)
                 logOneDay.EnterEdit()
         self.scrollView.scroll_y=1
         self.UpdateHeight()
 
     def LeaveEdit(self,instance=None):
-        print('len of children',len(self.logAll.children))
         self.logAll.children[0].LeaveEdit()
         self.logAll.clear_widgets()
         for logOneDay in self.indexLogs[:]:
@@ -180,7 +178,6 @@ class LogOneDay(StackLayout):
             self.height=self.log.height+kivy.metrics.dp(30)
         else:
             self.height=self.log.height+kivy.metrics.dp(102)
-        print('in record one day update', self.id,self.parent)
         #self.parent.parent.parent.UpdateHeight()
 
     def ChangeTime(self,id,timeDelta):
@@ -231,7 +228,6 @@ class LogOneDay(StackLayout):
             self.addRecord.width=self.width
             self.addRecord.btn.bind(on_press=self.AddNewLog)
             self.add_widget(self.addRecord)
-            print('one day in edit',self.id)
             self.UpdateHeight()
         '''
         self.title.edit.text='Done'
@@ -266,6 +262,7 @@ class Record(RelativeLayout):
     def __init__(self,id=None,**kwargs):
         super(Record,self).__init__(**kwargs)
         self.id=str(id)
+        self.duration.AutoDuration=self.AutoDuration
 
     def Delete(self):
         self.time.Delete()
@@ -290,6 +287,18 @@ class Record(RelativeLayout):
 
     def AddNewLog(self):
         self.parent.parent.AddNewLog()
+
+    def AutoDuration(self):
+        if re.match('[0-9]+:[0-9]+',self.time.text):
+            now=datetime.now()
+            start=datetime.strptime(str(date.today())+' '+self.time.text,'%Y-%m-%d %H:%M')
+            timeDelta=now-start
+            seconds=timeDelta.seconds
+            hour=int(seconds/3600)
+            minute=float('%.2f'%(int((seconds-hour*3600)/60)/60))
+            return str(hour+minute)
+        else:
+            return 'Duration'
 
 class AddRecord(RelativeLayout):
     pass

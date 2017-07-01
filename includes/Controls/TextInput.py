@@ -39,7 +39,6 @@ class TabTextInput(TextInput):
         '''
 
     def OnKeyDown(self,keyboard,keycode=None,text=None,modifier=None,**kwargs):
-        print(keyboard,keycode,text,modifier)
         if keycode[1]=='tab':
             if modifier==['shift']:
                 try:
@@ -123,17 +122,19 @@ class DurationInput(TabTextInput):
         Clock.schedule_once(laterInit,0.2)
 
     def insert_text(self,substring,from_undo=False):
-        print('insert')
         if re.match('[0-9]',substring) or substring==".":
             return super(DurationInput,self).insert_text(substring,from_undo)
 
     def on_focus(self,instance,value):
         if value==True:
+            self.hint_text=self.AutoDuration()
             if self.text=='':
                 self.contentTmp='0'
             else:
                 self.contentTmp=self.text
         else:
+            if self.text=='':
+                self.text=self.hint_text
             if self.contentTmp!=self.text:
                 try:
                     delta=float(self.text)-float(self.contentTmp)
@@ -144,6 +145,8 @@ class DurationInput(TabTextInput):
                     pass
             if self.text:
                 self.text=str(float(self.text))
+    def AutoDuration(self):
+        return 'Duration'
 
 class JobInput(TabTextInput):
     def __init__(self,**kwargs):

@@ -29,7 +29,7 @@ class MyScreenManager(ScreenManager):
             self.children[0].SaveLog()
 
     def Export(self,instance=None):
-        self.screenManager.children[0].ExportLog()
+        self.children[0].ExportLog()
 
     def SaveAndLeave(self,instance=None):
         self.Save()
@@ -39,9 +39,19 @@ class MyScreenManager(ScreenManager):
         Window.close()
 
     def OnLeaving(self,*args):
+        '''
         if self.requestLeaving==0:
             popup=MyPopup([{'type':'left-pure','text':'Don\'t Save','func':self.Leave,'shortCut':'d'},\
                            {'type':'right-big','text':'Save','func':self.SaveAndLeave,'shortCut':'s'},
+                           {'type':'right-pure','text':'Cancel','func':'','shortCut':'c'}])
+            self.children[0].add_widget(popup)
+            self.requestLeaving=1
+            return True
+        else:
+            return False
+        '''
+        if self.requestLeaving==0:
+            popup=MyPopup([{'type':'right-big','text':'Quit','func':self.SaveAndLeave,'shortCut':'q'},
                            {'type':'right-pure','text':'Cancel','func':'','shortCut':'c'}])
             self.children[0].add_widget(popup)
             self.requestLeaving=1

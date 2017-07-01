@@ -67,6 +67,7 @@ class DaytimeLogApp(App):
         Window.bind(on_request_close=self.screenManager.OnLeaving)
         #listen to shortcut
         self.screenManager.RequestKeyboard()
+        #AutoSave
 
     def RefreshContent(self,*args):
         self.todayView.Refresh()
