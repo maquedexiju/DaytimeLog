@@ -1,0 +1,70 @@
+<MyPopup>:
+  tips:tips
+  operations:operations
+  operationsLeft:operations_left
+  mask:mask
+  #size:self.parent.size
+  Button:
+    id:mask
+    background_normal:''
+    background_down:''
+    background_color:0,0,0,0.8
+    on_press:self.parent.Close()
+  RelativeLayout:
+    size:dp(280),dp(182)
+    size_hint:None,None
+    center:self.parent.width/2,self.parent.height/2
+    canvas:
+      Color:
+        rgba:1,1,1,1
+      Rectangle:
+        pos:0,0
+        size:self.size
+    Button:
+      id:tips
+      size:dp(280),dp(140)
+      size_hint:None,None
+      pos:dp(0),dp(42)
+      background_normal:''
+      background_down:''
+      background:1,1,1,0
+      color:0,0,0,1
+      font_size:'14sp'
+      text:'Do you want to Save the contents before leaving?'
+      text_size:dp(240),None
+      halign:'center'
+      line_height:1.5
+    StackLayout:
+      id:operations
+      size:dp(280),dp(42)
+      size_hint:None,None
+      pos:0,0
+      orientation:'rl-tb'
+    StackLayout:
+      id:operations_left
+      size:dp(280),dp(42)
+      size_hint:None,None
+      pos:0,0
+      orientation:'lr-tb'
+
+
+<PureButton>:
+  size:dp(60),dp(42)
+  size_hint:None,None
+  background_normal:''
+  background_down:'includes/icons/InputNormal.png'
+  background:1,1,1,0
+  color:0,0,0,1
+  underline:True
+  font_size:'14sp'
+
+<BigButton>:
+  size:dp(60),dp(42)
+  size_hint:None,None
+  background_normal:''
+  background_down:'includes/icons/InputNormal.png'
+  background:1,1,1,0
+  color:0.97,0.36,0.29,1
+  underline:True
+  bold:True
+  font_size:'14sp'
