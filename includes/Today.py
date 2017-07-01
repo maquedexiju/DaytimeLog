@@ -23,26 +23,29 @@ class TodayView(AdaptView):
     date=None
     def __init__(self,screenName,sysArgs,**kwargs):
         super(TodayView,self).__init__(screenName,sysArgs,**kwargs)
-        self.menu.Init(Save=self.SaveLog,Export=self.ExportLog)
+        #self.menu.Init(Save=self.SaveLog,Export=self.ExportLog)
+        self.menu.Init(Export=self.ExportLog)
         self.navigator.Init(0)
         #self.log.viewMode=True
         self.Refresh()
 
     def SaveLog(self,instance=None):
         data=self.log.GetLog()
-        if data:
-            self.DB.Save(data)
+        self.DB.Save(data)
 
     def ExportLog(self,instance=None):
         data=self.log.GetLog()
         filePath=self.FILEPATH+'tmp.csv'
-        with open(filePath,'w',encoding='utf-8') as csvFile:
-            fieldNames=['ID', 'Start Time','Duration','Tag','Content']
+        with open(filePath, 'w',encoding='utf-8') as csvFile:
+            fieldNames=['ID','Start Time','Duration','Tag','Content']
             writer=csv.DictWriter(csvFile, fieldnames=fieldNames)
             writer.writeheader()
-            writer.writerow({'ID':data[0]['day']})
+            day=None
             for record in data:
+                if record['day']!=day:
+                    writer.writerow({'ID':record['day']})
                 writer.writerow({'ID':record['id'],\
+                #'Date':record['day'],\
                 'Start Time':record['time'],\
                 'Duration':record['duration'],\
                 'Tag':record['tag'],\
@@ -61,3 +64,11 @@ class TodayView(AdaptView):
             LogThisDay=self.DB.SearchDate(now)
             self.date=datetime.strftime(now,'%Y-%m-%d')
             self.log.DrawLog(LogThisDay,self.date)
+
+    def on_enter(self,*args):
+        def tmpfunction(time=None):
+            self.Refresh()
+        Clock.schedule_once(tmpfunction,0.4)
+
+    def on_leave(self,*args):
+        self.SaveLog()

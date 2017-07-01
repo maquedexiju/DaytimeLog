@@ -21,7 +21,8 @@ class HistoryView(AdaptView):
     datePicker=ObjectProperty(None)
     def __init__(self,screenName,sysArgs,**kwargs):
         super(HistoryView,self).__init__(screenName,sysArgs,**kwargs)
-        self.menu.Init(Save=self.SaveLog,Export=self.ExportLog)
+        #self.menu.Init(Save=self.SaveLog,Export=self.ExportLog)
+        self.menu.Init(Export=self.ExportLog)
         self.navigator.Init(1)
         self.datePicker.DrawLog=self.DrawLog
         self.log.viewMode=True
@@ -33,13 +34,14 @@ class HistoryView(AdaptView):
         time=self.datePicker.GetDate()
         startTime=time['startTime']
         endTime=time['endTime']
-        self.DrawLog(startTime,endTime)
+        def tmpfunction(time=None):
+            self.DrawLog(startTime,endTime)
+        Clock.schedule_once(tmpfunction,0.4)
 
     def DrawLog(self,startTimeinString,endTimeinString):
         startTime=datetime.strptime(startTimeinString,'%Y-%m-%d')
         endTime=datetime.strptime(endTimeinString,'%Y-%m-%d') if datetime.strptime(endTimeinString,'%Y-%m-%d')<datetime.now() else datetime.now()
         dayDelta=endTime-startTime
-
         self.log.Clear()
         for i in range(0,dayDelta.days+1):
             date1=startTime+timedelta(days=i)
@@ -48,8 +50,7 @@ class HistoryView(AdaptView):
 
     def SaveLog(self,instance=None):
         data=self.log.GetLog()
-        if data:
-            self.DB.Save(data)
+        self.DB.Save(data)
 
     def ExportLog(self,instance=None):
         data=self.log.GetLog()

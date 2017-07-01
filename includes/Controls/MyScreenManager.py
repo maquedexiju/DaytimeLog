@@ -13,6 +13,7 @@ class MyScreenManager(ScreenManager):
         self.keyboard.bind(on_key_down=self.ShortCut)
 
     def ShortCut(self,keyboard,keycode,text,modifiers):
+        print('sm kb')
         if modifiers==['meta'] and keycode[1]=='s':
             self.Save()
         elif modifiers==['meta'] and keycode[1]=='e':

@@ -133,7 +133,7 @@ class DurationInput(TabTextInput):
             else:
                 self.contentTmp=self.text
         else:
-            if self.text=='':
+            if self.text=='' and self.hint_text!='Duration':
                 self.text=self.hint_text
             if self.contentTmp!=self.text:
                 try:
@@ -144,7 +144,8 @@ class DurationInput(TabTextInput):
                 except ValueError:
                     pass
             if self.text:
-                self.text=str(float(self.text))
+                self.text='%.2f'%float(self.text)
+
     def AutoDuration(self):
         return 'Duration'
 

@@ -14,16 +14,19 @@ class DBDaytimeLog:
     db=None
 
     def __init__(self,BASEPATH):
-        self.db=TinyDB(BASEPATH+'includes/db.json')
+        self.db=TinyDB(BASEPATH+'db.json')
 
     def Save(self,data):
         Record=Query()
         date=None
+        if not data:
+            return
         for datum in data:
             if datum['day']!=date:
                 date=datum['day']
                 self.db.remove(Record.day==datum['day'])
-            self.db.insert(datum)
+            if datum['id']!='NULL':
+                self.db.insert(datum)
 
     def SearchDate(self,date):
         Log=Query()

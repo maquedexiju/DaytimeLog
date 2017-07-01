@@ -25,7 +25,9 @@ class ReportView(AdaptView):
         time=self.datePicker.GetDate()
         startTime=time['startTime']
         endTime=time['endTime']
-        self.DrawLog(startTime,endTime)
+        def tmpfunction(time=None):
+            self.DrawLog(startTime,endTime)
+        Clock.schedule_once(tmpfunction,0.4)
 
     def ExportLog(self,instance=None):
         filePath=self.FILEPATH+'tmp.csv'

@@ -64,7 +64,7 @@ class DaytimeLogApp(App):
                 os.mkdir(filepath)
             self.sysArgs['FILEPATH']=filepath+'/'
         #database
-        self.dataBase=DBDaytimeLog(BASEPATH)
+        self.dataBase=DBDaytimeLog(self.sysArgs['FILEPATH'])
         self.sysArgs['DB']=self.dataBase
         #ScreenManager
         self.screenManager=MyScreenManager(transition=NoTransition())

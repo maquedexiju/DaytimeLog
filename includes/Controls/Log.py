@@ -38,7 +38,11 @@ class Log(RelativeLayout):
     def GetLog(self):
         data=[]
         for logOneDay in self.indexLogs[:]:
-            data+=logOneDay.GetLog()
+            dataForOneDay=logOneDay.GetLog()
+            if dataForOneDay:
+                data+=logOneDay.GetLog()
+            else:
+                data+=[{'day':logOneDay.id,'id':'NULL','time':'','duration':'','tag':'','job':''}]
         return data
 
     def EnterEdit(self,instance=None):
@@ -187,7 +191,7 @@ class LogOneDay(StackLayout):
             if durationPrevinFLoat<0:
                 self.recordIndex[id].text=self.recordIndex[id-1].text
             else:
-                self.recordIndex[id-1].duration.text=str(durationPrevinFLoat)
+                self.recordIndex[id-1].duration.text='%.2f'%durationPrevinFLoat
         for record in self.recordIndex[id+1:]:
             time=datetime.strptime(record.time.text,'%H:%M')+timeDelta
             record.time.text=datetime.strftime(time,'%H:%M')
