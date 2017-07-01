@@ -35,7 +35,7 @@ class TodayView(AdaptView):
 
     def ExportLog(self,instance=None):
         data=self.log.GetLog()
-        filePath=self.BASEPATH+'tmp.csv'
+        filePath=self.FILEPATH+'tmp.csv'
         with open(filePath,'w',encoding='utf-8') as csvFile:
             fieldNames=['ID', 'Start Time','Duration','Tag','Content']
             writer=csv.DictWriter(csvFile, fieldnames=fieldNames)

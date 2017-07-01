@@ -13,6 +13,9 @@ from array import array
 from datetime import date
 import re
 import sys
+import os
+import platform
+import subprocess
 
 from kivy.uix.textinput import TextInput
 
@@ -43,12 +46,23 @@ class DaytimeLogApp(App):
         Window.bind(on_resize=resize)
 
     def SysInit(self):
-        #basepath
-        if getattr( sys, 'frozen', False ) :
-            BASEPATH=os.path.dirname(sys.executable)+'/'
-        else :
-            BASEPATH=''
-        self.sysArgs['BASEPATH']=BASEPATH
+        sys=platform.system()
+        if sys=='Window':
+            pass
+        elif sys=='Linux':
+            pass
+        elif sys=='Darwin':
+            #basepath
+            if getattr( sys, 'frozen', False ) :
+                BASEPATH=os.path.dirname(sys.executable)+'/'
+            else :
+                BASEPATH=''
+            self.sysArgs['BASEPATH']=BASEPATH
+            #file path
+            filepath=os.path.expanduser('~')+'/.DaytimeLog'
+            if not os.path.exists(filepath):
+                os.mkdir(filepath)
+            self.sysArgs['FILEPATH']=filepath+'/'
         #database
         self.dataBase=DBDaytimeLog(BASEPATH)
         self.sysArgs['DB']=self.dataBase

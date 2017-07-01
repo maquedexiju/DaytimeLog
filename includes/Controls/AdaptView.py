@@ -13,6 +13,7 @@ class AdaptView(Screen):
         super(AdaptView,self).__init__(name=screenName,**kwargs)
         self.DB=sysArgs['DB']
         self.BASEPATH=sysArgs['BASEPATH']
+        self.FILEPATH=sysArgs['FILEPATH']
         self.SM=sysArgs['SM']
         self.WINDOW=sysArgs['WINDOW']
 

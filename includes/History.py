@@ -34,7 +34,6 @@ class HistoryView(AdaptView):
         startTime=time['startTime']
         endTime=time['endTime']
         self.DrawLog(startTime,endTime)
-        print(type(self.BASEPATH))
 
     def DrawLog(self,startTimeinString,endTimeinString):
         startTime=datetime.strptime(startTimeinString,'%Y-%m-%d')
@@ -54,7 +53,7 @@ class HistoryView(AdaptView):
 
     def ExportLog(self,instance=None):
         data=self.log.GetLog()
-        filePath=self.BASEPATH+'tmp.csv'
+        filePath=self.FILEPATH+'tmp.csv'
         with open(filePath, 'w',encoding='utf-8') as csvFile:
             fieldNames=['ID','Start Time','Duration','Tag','Content']
             writer=csv.DictWriter(csvFile, fieldnames=fieldNames)
