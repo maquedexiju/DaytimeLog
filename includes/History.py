@@ -66,6 +66,7 @@ class HistoryView(AdaptView):
             for record in data:
                 if record['day']!=day:
                     writer.writerow({'ID':record['day']})
+                    day=record['day']
                 writer.writerow({'ID':record['id'],\
                 #'Date':record['day'],\
                 'Start Time':record['time'],\

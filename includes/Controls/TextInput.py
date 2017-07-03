@@ -1,6 +1,7 @@
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.clock import Clock
+#from kivy.uix.behaviors.emacs import EmacsBehavior
 import re
 from datetime import *
 from string import *
@@ -17,7 +18,7 @@ class TabTextInput(TextInput):
         self.font_name="includes/fzltqh.ttf"
         #self.multiline=False
         self.font_size="12sp"
-        #self.keybindings='emacs'
+        #self.key_bindings='emacs'
         self.keyboard=Window.request_keyboard(self.callback,self,input_type="text")
         self.keyboard_on_key_down=self.OnKeyDown
         '''
@@ -54,6 +55,23 @@ class TabTextInput(TextInput):
                     pass
         elif keycode[1]=='escape':
             pass
+        elif keycode[1]=='d' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_right')
+            self.do_backspace()
+        elif keycode[1]=='h' and modifier==['ctrl']:
+            self.do_backspace()
+        elif keycode[1]=='f' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_right')
+        elif keycode[1]=='b' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_left')
+        elif keycode[1]=='a' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_home')
+        elif keycode[1]=='e' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_end')
+        elif keycode[1]=='n' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_down')
+        elif keycode[1]=='p' and modifier==['ctrl']:
+            self.do_cursor_movement('cursor_up')
         else:
             super(TabTextInput,self).keyboard_on_key_down(keyboard,keycode,text,modifier,**kwargs)
 
@@ -230,16 +248,22 @@ class StartTimeInput(TextInput):
             self.choosed=True
 
 class EndTimeInput(TextInput):
+    def __init__(self,**kwargs):
+        super(EndTimeInput,self).__init__(**kwargs)
+
     def insert_text(self,substring,from_undo=False):
         if substring=='\t':
             self.SetEndTime(self)
         elif re.match('[0-9]',substring) or re.match('-',substring):
             return super(EndTimeInput,self).insert_text(substring,from_undo)
+
     def on_focus(self,instance,value):
         if value==True:
             if not re.match('[0-9]{4}-[0-9]{2}-[0-9]{2}',self.focus_previous.text):
                 self.focus_previous.focus=True
+
     def on_text_validate(self):
         self.SetEndTime(self)
+
     def SetEndTime(self,instance):
         pass

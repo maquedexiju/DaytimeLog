@@ -41,7 +41,7 @@ class ReportOneLine(StackLayout):
         self.width=width
         self.id=id
         self.tag.text=id
-        self.time.text=str(info['duration'])+'H'
+        self.time.text='%.2f'%info['duration']+'H'
         self.indexJobs=[]
         self.btn.bind(on_press=self.Expand)
         for job,duration in info['job'].items():
@@ -80,7 +80,7 @@ class Jobs(RelativeLayout):
         self.jobContent.text=job
         self.jobContent.texture_update([0,0])
         self.height=self.jobContent.height+kivy.metrics.dp(20)
-        self.time.text=str(duration)+'H'
+        self.time.text='%.2f'%duration+'H'
 '''
 class MyLabel(Label):
     def texture_update(self,size):
