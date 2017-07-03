@@ -52,7 +52,7 @@ class MyScreenManager(ScreenManager):
             return False
         '''
         if self.requestLeaving==0:
-            popup=MyPopup([{'type':'right-big','text':'Quit','func':self.SaveAndLeave,'shortCut':'q'},
+            popup=MyPopup('Do you want to leave now?',[{'type':'right-big','text':'Quit','func':self.SaveAndLeave,'shortCut':'q'},
                            {'type':'right-pure','text':'Cancel','func':'','shortCut':'c'}])
             self.children[0].add_widget(popup)
             self.requestLeaving=1

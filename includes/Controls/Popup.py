@@ -13,8 +13,9 @@ Builder.load_file('includes/Controls/Popup.kv')
 
 class MyPopup(RelativeLayout):
     shortCut={}
-    def __init__(self,btns,**kwargs):
+    def __init__(self,tips,btns,**kwargs):
         super(MyPopup,self).__init__(**kwargs)
+        self.tips.text=tips
         self.keyboard=Window.request_keyboard(self.CloseShortCut,self,input_type='text')
         #self.keyboard.on_key_down=self.ShortCut
         self.keyboard.bind(on_key_down=self.ShortCut)

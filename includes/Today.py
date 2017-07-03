@@ -67,7 +67,11 @@ class TodayView(AdaptView):
 
     def on_enter(self,*args):
         def tmpfunction(time=None):
-            self.Refresh()
+            now=date.today()
+            LogThisDay=self.DB.SearchDate(now)
+            self.date=datetime.strftime(now,'%Y-%m-%d')
+            self.log.Clear()
+            self.log.DrawLog(LogThisDay,self.date)
         Clock.schedule_once(tmpfunction,0.4)
 
     def on_leave(self,*args):

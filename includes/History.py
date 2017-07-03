@@ -38,6 +38,9 @@ class HistoryView(AdaptView):
             self.DrawLog(startTime,endTime)
         Clock.schedule_once(tmpfunction,0.4)
 
+    def on_leave(self,*args):
+        self.SaveLog()
+
     def DrawLog(self,startTimeinString,endTimeinString):
         startTime=datetime.strptime(startTimeinString,'%Y-%m-%d')
         endTime=datetime.strptime(endTimeinString,'%Y-%m-%d') if datetime.strptime(endTimeinString,'%Y-%m-%d')<datetime.now() else datetime.now()

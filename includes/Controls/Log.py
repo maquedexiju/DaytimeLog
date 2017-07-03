@@ -29,9 +29,10 @@ class Log(RelativeLayout):
         log.DrawLog(records)
         #self.logAll.height+=log.height
         self.indexLogs.append(log)
-        self.UpdateHeight()
+        #self.UpdateHeight()
 
     def Clear(self):
+        self.scrollView.scroll_y=1
         self.logAll.clear_widgets()
         self.indexLogs=[]
 
@@ -182,7 +183,7 @@ class LogOneDay(StackLayout):
             self.height=self.log.height+kivy.metrics.dp(30)
         else:
             self.height=self.log.height+kivy.metrics.dp(102)
-        #self.parent.parent.parent.UpdateHeight()
+        self.parent.parent.parent.UpdateHeight()
 
     def ChangeTime(self,id,timeDelta):
         if id>0:
@@ -310,11 +311,11 @@ class AddRecord(RelativeLayout):
 class LogEmpty(RelativeLayout):
     pass
 
-class MyScrollView(ScrollView):
+class LogScrollView(ScrollView):
     indexPostion=[]
     formerSize=None
     def __init__(self,**kwargs):
-        super(MyScrollView,self).__init__(**kwargs)
+        super(LogScrollView,self).__init__(**kwargs)
         self.indexPostion=[]
         self.effect_cls=ScrollEffect
         self.formerSize=0
