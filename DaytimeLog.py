@@ -3,6 +3,7 @@ from kivy.app import App
 from kivy.clock import *
 from kivy.core.window import Window
 from kivy.uix.screenmanager import *
+from kivy.logger import Logger
 from includes.Today import *
 from includes.History import *
 from includes.Report import *
@@ -73,6 +74,12 @@ class DaytimeLogApp(App):
         self.sysArgs['WINDOW']=Window
         #config file
         Config.read(BASEPATH+'includes/config.ini')
+        #config logs
+        Config.set('kivy','log_dir',self.sysArgs['FILEPATH'])
+        #config logo
+        #Config.set('kivy','window_icon', BASEPATH+'includes/icons/DaytimeLog.png')
+        self.icon='includes/icons/DaytimeLog.png'
+
 
     def TaskInit(self):
         #in suppose that you use the app today and still open it tommorrow
@@ -93,4 +100,7 @@ class DaytimeLogApp(App):
         #self.screenManager.current='reportView'
         return self.screenManager
 if __name__=='__main__':
-    DaytimeLogApp().run()
+    try:
+        DaytimeLogApp().run()
+    except:
+        Logger.critical('crashed',exc_info=True,stack_info=True)
