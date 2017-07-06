@@ -113,8 +113,10 @@ class TimeInput(TabTextInput):
     def on_focus(self,instance,value):
         if value==True:
             self.contentTmp=self.text
+            #if self.text=='':
+            self.hint_text=self.AutoTime()
         else:
-            if self.contentTmp!=self.text:
+            if self.contentTmp!=self.text and self.text!='':
                 try:
                     timeDelta=datetime.strptime(self.text,'%H:%M')-datetime.strptime(self.contentTmp,'%H:%M')
                     #self.parent.ChangeTime(timeDelta)
@@ -122,12 +124,17 @@ class TimeInput(TabTextInput):
                     #self.parent.ChangeDuration(timeDelta)
                 except ValueError:
                     pass
+            if self.text=='' and self.hint_text!='Start at':
+                self.text=self.hint_text
 
     def insert_text(self,substring,from_undo=False):
         if re.match('[0-9]',substring) or substring==":":
             return super(TimeInput,self).insert_text(substring,from_undo)
         elif substring=="：":
             return super(TimeInput,self).insert_text(":",from_undo)
+
+    def AutoTime(self):
+        pass
 
 class DurationInput(TabTextInput):
     contentTmp=None

@@ -18,6 +18,7 @@ class Timer(RelativeLayout):
     clock=ObjectProperty(None)
     start=ObjectProperty(None)
     TimerHandler=None
+    StopHandler=None
     countDown=None
     lastTimer=ObjectProperty(None)
     def __init__(self,**kwargs):
@@ -76,7 +77,7 @@ class Timer(RelativeLayout):
                         self.countDown=datetime.strptime(str(DefaultTimer),'%M')
                 except TypeError:
                     self.countDown=datetime.strptime(str(DefaultTimer),'%M')
-        Clock.schedule_once(self.StopTimer,self.countDown.second+self.countDown.minute*60+self.countDown.hour*3600)
+        self.StopHandler=Clock.schedule_once(self.StopTimer,self.countDown.second+self.countDown.minute*60+self.countDown.hour*3600)
         if self.countDown.hour:
             self.clock.text=datetime.strftime(self.countDown,'%H:%M:%S')
         else:
@@ -110,6 +111,7 @@ class Timer(RelativeLayout):
         self.stop.x+=self.width*3
         self.pause.x+=self.width*3
         self.pause.background_normal='includes/icons/Pause.png'
+        Clock.unschedule(self.StopHandler)
 
     '''
     def StartTimerManually(self,instance=None):

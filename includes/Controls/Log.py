@@ -5,7 +5,7 @@ from kivy.clock import Clock
 import kivy.metrics
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import ObjectProperty
-from kivy.effects.scroll import ScrollEffect
+#from kivy.effects.scroll import ScrollEffect
 from includes.Controls.TextInput import *
 import re
 from datetime import *
@@ -136,6 +136,7 @@ class LogOneDay(StackLayout):
         if length==0 and self.viewMode==True:
             self.log.clear_widgets()
         recordtmp=Record(length)
+        recordtmp.GetTime=self.PreviousTime
         self.log.add_widget(recordtmp)
         #recordtmp.pos=(0,-56*length)
         recordtmp.width=self.width
@@ -259,6 +260,17 @@ class LogOneDay(StackLayout):
         self.parent.parent.parent.LeaveEdit(self.id)
         '''
 
+    def PreviousTime(self,record):
+        if record.id!='0':
+            try:
+                pre=self.recordIndex[-2]
+                time=datetime.strptime(pre.time.text,'%H:%M')+timedelta(seconds=float(pre.duration.text)*3600)
+                return datetime.strftime(time,'%H:%M')
+            except ValueError:
+                return 'Start at'
+        else:
+            return 'Start at'
+
 class Record(RelativeLayout):
     time=ObjectProperty(None)
     duration=ObjectProperty(None)
@@ -268,6 +280,7 @@ class Record(RelativeLayout):
         super(Record,self).__init__(**kwargs)
         self.id=str(id)
         self.duration.AutoDuration=self.AutoDuration
+        self.time.AutoTime=self.AutoTime
 
     def Delete(self):
         self.time.Delete()
@@ -305,6 +318,12 @@ class Record(RelativeLayout):
         else:
             return 'Duration'
 
+    def AutoTime(self):
+        return self.GetTime(self)
+
+    def GetTime(self,record):
+        pass
+
 class AddRecord(RelativeLayout):
     pass
 
@@ -317,7 +336,7 @@ class LogScrollView(ScrollView):
     def __init__(self,**kwargs):
         super(LogScrollView,self).__init__(**kwargs)
         self.indexPostion=[]
-        self.effect_cls=ScrollEffect
+        #self.effect_cls=ScrollEffect
         self.formerSize=0
 
     def update_from_scroll(self,pos):
