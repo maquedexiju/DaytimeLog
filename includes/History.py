@@ -37,9 +37,11 @@ class HistoryView(AdaptView):
         def tmpfunction(time=None):
             self.DrawLog(startTime,endTime)
         Clock.schedule_once(tmpfunction,0.4)
+        super(HistoryView, self).on_enter()
 
     def on_leave(self,*args):
         self.SaveLog()
+        super(HistoryView,self).on_leave()
 
     def DrawLog(self,startTimeinString,endTimeinString):
         startTime=datetime.strptime(startTimeinString,'%Y-%m-%d')

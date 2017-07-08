@@ -90,7 +90,11 @@ class TabTextInput(TextInput):
             self.focus_next.focus_previous=self.focus_previous
         except AttributeError:
             pass
+    
+    def on_focus(self,instance,value):
+        pass
 
+     
     '''
     def GetLast():
         return TabTextInput.__last
@@ -113,7 +117,6 @@ class TimeInput(TabTextInput):
     def on_focus(self,instance,value):
         if value==True:
             self.contentTmp=self.text
-            #if self.text=='':
             self.hint_text=self.AutoTime()
         else:
             if self.contentTmp!=self.text and self.text!='':
@@ -134,7 +137,7 @@ class TimeInput(TabTextInput):
             return super(TimeInput,self).insert_text(":",from_undo)
 
     def AutoTime(self):
-        pass
+        return('auto time')
 
 class DurationInput(TabTextInput):
     contentTmp=None
@@ -151,6 +154,7 @@ class DurationInput(TabTextInput):
             return super(DurationInput,self).insert_text(substring,from_undo)
 
     def on_focus(self,instance,value):
+        super(DurationInput,self).on_focus(instance,value)
         if value==True:
             self.hint_text=self.AutoDuration()
             if self.text=='':

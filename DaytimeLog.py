@@ -79,6 +79,8 @@ class DaytimeLogApp(App):
         #config logo
         #Config.set('kivy','window_icon', BASEPATH+'includes/icons/DaytimeLog.png')
         self.icon='includes/icons/DaytimeLog.png'
+        #keyboard
+        #Window.keyboard_on_key_down=
 
 
     def TaskInit(self):
@@ -87,7 +89,7 @@ class DaytimeLogApp(App):
         #when request close
         Window.bind(on_request_close=self.screenManager.OnLeaving)
         #listen to shortcut
-        self.screenManager.RequestKeyboard()
+        #self.screenManager.RequestKeyboard()
         #AutoSave
 
     def RefreshContent(self,*args):

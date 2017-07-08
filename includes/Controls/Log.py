@@ -112,6 +112,7 @@ class LogOneDay(StackLayout):
         #draw logs
         for t in range(0,len(log)):
             recordtmp=Record(t)
+            recordtmp.GetTime=self.PreviousTime
             recordtmp.time.text=log[t]['time']
             recordtmp.duration.text=log[t]['duration']
             if log[t]['tag']:
@@ -266,7 +267,7 @@ class LogOneDay(StackLayout):
                 pre=self.recordIndex[-2]
                 time=datetime.strptime(pre.time.text,'%H:%M')+timedelta(seconds=float(pre.duration.text)*3600)
                 return datetime.strftime(time,'%H:%M')
-            except ValueError:
+            except :
                 return 'Start at'
         else:
             return 'Start at'
@@ -314,7 +315,7 @@ class Record(RelativeLayout):
             seconds=timeDelta.seconds
             hour=int(seconds/3600)
             minute=float('%.2f'%(int((seconds-hour*3600)/60)/60))
-            return str(hour+minute)
+            return str(float(hour)+minute)
         else:
             return 'Duration'
 

@@ -3,3 +3,4 @@
 build/
 dist/
 DaytimeLog.spec
+.vscode/
