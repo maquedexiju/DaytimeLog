@@ -156,14 +156,14 @@
     size_hint:None,None
     pos:self.parent.width-dp(30)+self.parent.width*3,dp(42)
     background_normal:'includes/icons/Insert.png'
-    on_press:self.parent.parent.parent.Insert(int(self.parent.id))
+    on_release:self.parent.parent.parent.Insert(int(self.parent.id))
   ImageButton:
     id:delete
     size:dp(24),dp(24)
     size_hint:None,None
     pos:self.parent.width-dp(30)+self.parent.width*3,dp(6)
     background_normal:'includes/icons/Delete.png'
-    on_press:self.parent.parent.parent.Remove(int(self.parent.id))
+    on_release:self.parent.parent.parent.Remove(int(self.parent.id))
 
 <AddRecord>:
   btn:add_record
@@ -183,7 +183,7 @@
   Button:
     id:add_record
     background_color:1,1,1,0
-    #on_press:self.parent.parent.AddNewLog()
+    #on_release:self.parent.parent.AddLastLog()
   Widget:
     size:self.parent.size
     pos:0,0

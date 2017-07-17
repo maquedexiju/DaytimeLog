@@ -55,8 +55,8 @@ class MyPopup(RelativeLayout):
     def Close(self,instance=None):
         #Window.release_keyboard(self.keyboard)
         self.keyboard.release()
-        self.parent.parent.RequestKeyboard()
-        self.parent.parent.requestLeaving=0
+        self.parent.RequestKeyboard()
+        self.parent.requestLeaving=0
         self.parent.remove_widget(self)
 
 class PureButton(Button):

@@ -9,7 +9,7 @@
   yesterday:yesterday
   lastWeek:last_week
   thisWeek:this_week
-  size:self.parent.width-dp(24),dp(480)
+  size:self.parent.width-dp(24) if self.parent.width<dp(400) else dp(376) ,dp(480)
   size_hint:None,None
   Button:
     id:mask
@@ -217,7 +217,7 @@
     text:'2017-06-12 To 2017-06-18'
     color:0,0,0,1
     font_size:'18sp'
-    on_press:self.parent.OpenDates()
+    on_release:self.parent.OpenDates()
   ImageButton:
     id:prev_range
     size:dp(54),dp(54)

@@ -153,6 +153,11 @@ class LogOneDay(StackLayout):
             recordtmp.insert.x-=self.width*3
             recordtmp.delete.x-=self.width*3
         self.UpdateHeight()
+        
+    def AddLastLog(self,instance=None):
+        #when you click the add button,add the log and scroll to the bottom
+        self.AddNewLog()
+
 
     def Remove(self,index):
         self.log.remove_widget(self.recordIndex[index])
@@ -314,8 +319,8 @@ class Record(RelativeLayout):
             timeDelta=now-start
             seconds=timeDelta.seconds
             hour=int(seconds/3600)
-            minute=float('%.2f'%(int((seconds-hour*3600)/60)/60))
-            return str(float(hour)+minute)
+            minute=int((seconds-hour*3600)/60)/60
+            return '%.2f'%str(float(hour)+minute)
         else:
             return 'Duration'
 
@@ -352,3 +357,7 @@ class LogScrollView(ScrollView):
                 self.parent.title.date.text=self.indexPostion[i]['id']
                 break
             i+=1
+    
+    def ScrolltoBottom(self):
+        self.scroll_y=1
+        self.update_from_scroll((0,0))

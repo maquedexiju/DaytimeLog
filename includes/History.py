@@ -1,6 +1,7 @@
 from kivy.clock import Clock
 from kivy.lang.builder import Builder
 from kivy.properties import ObjectProperty
+from kivy import Logger
 from includes.Controls.AdaptView import AdaptView
 from includes.Controls.Navigator import Navigator
 from includes.Controls.DatePicker import DatePicker
@@ -36,7 +37,7 @@ class HistoryView(AdaptView):
         endTime=time['endTime']
         def tmpfunction(time=None):
             self.DrawLog(startTime,endTime)
-        Clock.schedule_once(tmpfunction,0.4)
+        Clock.schedule_once(tmpfunction,0.2)
         super(HistoryView, self).on_enter()
 
     def on_leave(self,*args):

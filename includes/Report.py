@@ -28,7 +28,7 @@ class ReportView(AdaptView):
         endTime=time['endTime']
         def tmpfunction(time=None):
             self.DrawLog(startTime,endTime)
-        Clock.schedule_once(tmpfunction,0.4)
+        Clock.schedule_once(tmpfunction,0.2)
 
     def on_leave(self,*args):
         super(ReportView,self).on_leave()
@@ -44,16 +44,18 @@ class ReportView(AdaptView):
                 for (job,duration) in info['job'].items():
                     if firstLine==True:
                         firstLine=False
-                        writer.writerow({'Tag':tag,'Total Time(Hour)':info['duration'],'Content':job,'Time(Hour)':duration})
+                        writer.writerow({'Tag':tag,'Total Time(Hour)':'%.2f'%info['duration'],'Content':job,'Time(Hour)':duration})
                     else:
-                        writer.writerow({'Content':job,'Time(Hour)':duration})
-            sys=platform.system()
-            if sys=='Window':
-                os.startfile(filePath)
-            elif sys=='Linux':
-                subprocess.call(["xdg-open", filePath])
-            elif sys=='Darwin':
-                subprocess.call(["open", filePath])
+                        writer.writerow({'Content':job,'Time(Hour)':'%.2f'%duration})
+        sys=platform.system()
+        if sys=='Window':
+            os.startfile(filePath)
+        elif sys=='Linux':
+            subprocess.call(["xdg-open", filePath])
+        elif sys=='Darwin':
+            #subprocess.call(["open", filePath])
+            pass
+        self.SendviaEmail('receiver', filePath, 'csv')
 
     def DrawLog(self,startTimeinString,endTimeinString):
         self.tags={}

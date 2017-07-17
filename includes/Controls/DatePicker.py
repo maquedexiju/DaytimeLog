@@ -3,6 +3,7 @@ from kivy.lang.builder import Builder
 import kivy.metrics
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import ObjectProperty
+from kivy.logger import Logger
 import re
 from includes.Controls.TextInput import YearInput,MonthInput,StartTimeInput,EndTimeInput
 from datetime import *
@@ -286,6 +287,8 @@ class DatePicker(RelativeLayout):
         def laterInit(time=None):
             #self.mask.x=self.to_local(0+self.width*3,0)
             self.mask.pos=self.to_local(0+self.width*3,0)
+            Logger.info('DATEPICKER: parent size, %d, %d, mask size, %d, %d'%(self.parent.width,self.parent.height,self.width,self.height))
+            Logger.info('DATEPICKER: mask position, %d, %d'%(self.mask.x,self.mask.y))
             self.picker.center=self.to_local(self.parent.width/2+self.width*3,self.parent.height/2)
             self.picker.Confirm=self.SetDate
             self.prevRange.bind(on_press=self.JumpPrev)

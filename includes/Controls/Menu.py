@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 from kivy.uix.button import Button
 import kivy.metrics
+from kivy.logger import Logger
 
 Builder.load_file('includes/Controls/Menu.kv')
 Builder.load_file('includes/Controls/ImageButton.kv')
@@ -14,6 +15,7 @@ class Menu(RelativeLayout):
     poped=False
     def Init(self,**kwargs):
         i=0
+        Logger.info('MENU: init, parent\' width %d '%self.parent.width)
         for key in kwargs:
             i+=1
             t=eval(key)(kwargs[key])
@@ -21,7 +23,7 @@ class Menu(RelativeLayout):
             self.add_widget(t)
             self.menuIndex.append(t)
         self.mask.pos=self.to_local(0+self.parent.width*3,0)
-        self.more.bind(on_press=self.PopUp)
+        self.more.bind(on_release=self.PopUp)
         '''
         def laterInit(time=None):
             self.mask.pos=self.to_local(0+self.parent.width*3,0)
@@ -31,12 +33,14 @@ class Menu(RelativeLayout):
 
     def PopUp(self,btn):
         if self.poped==False:
+            Logger.info('MENU: popup')
             for menuLine in self.menuIndex:
                 menuLine.x-=self.parent.width*3
             self.poped=True
             self.mask.x-=self.parent.width*3
             #self.bind(on_touch_down=self.Close)
         else :
+            Logger.info('MENU: close')
             for menuLine in self.menuIndex:
                 menuLine.x+=self.parent.width*3
             self.poped=False

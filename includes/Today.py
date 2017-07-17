@@ -75,7 +75,7 @@ class TodayView(AdaptView):
             self.SaveLog()
             self.log.Clear()
             self.log.DrawLog(LogThisDay,self.date)
-        Clock.schedule_once(tmpfunction,0.4)
+        Clock.schedule_once(tmpfunction,0.2)
         super(TodayView, self).on_enter()
 
     def on_leave(self,*args):

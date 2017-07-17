@@ -1,6 +1,7 @@
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.clock import Clock
+from kivy.logger import Logger
 #from kivy.uix.behaviors.emacs import EmacsBehavior
 import re
 from datetime import *
@@ -19,8 +20,11 @@ class TabTextInput(TextInput):
         #self.multiline=False
         self.font_size="12sp"
         #self.key_bindings='emacs'
-        self.keyboard=Window.request_keyboard(self.callback,self,input_type="text")
+        #self.keyboard=Window.request_keyboard(self.callback,self,input_type="text")
         self.keyboard_on_key_down=self.OnKeyDown
+        #self.keyboard.release()
+        #self.keyboard_mode='managed'
+        #self.hide_keyboard()
         '''
         try:
             pre=kwargs['pre']
@@ -79,7 +83,7 @@ class TabTextInput(TextInput):
 
     def callback(self):
         #Window.release_keyboard(self.keyboard)
-        pass
+        self.focus=False
 
     def Delete(self):
         try:
@@ -92,8 +96,22 @@ class TabTextInput(TextInput):
             pass
     
     def on_focus(self,instance,value):
-        pass
-
+        #super(TabTextInput,self).on_focus(self,value)
+        Logger.info("INPUT: %s is on focus"%self.id)
+        '''
+        if value == True :
+            #self.keyboard_on_key_down=self.OnKeyDown
+            self.show_keyboard()
+        else:
+            #self.keyboard.release()
+            self.hide_keyboard()
+        '''
+    '''
+    def RequestKeyboard(self):
+        self.keyboard=Window.request_keyboard(self.callback,self,input_type="text")
+        self.keyboard_on_key_down=self.OnKeyDown
+    
+    '''
      
     '''
     def GetLast():
@@ -129,6 +147,7 @@ class TimeInput(TabTextInput):
                     pass
             if self.text=='' and self.hint_text!='Start at':
                 self.text=self.hint_text
+        super(TimeInput,self).on_focus(self,value)
 
     def insert_text(self,substring,from_undo=False):
         if re.match('[0-9]',substring) or substring==":":
@@ -154,7 +173,6 @@ class DurationInput(TabTextInput):
             return super(DurationInput,self).insert_text(substring,from_undo)
 
     def on_focus(self,instance,value):
-        super(DurationInput,self).on_focus(instance,value)
         if value==True:
             self.hint_text=self.AutoDuration()
             if self.text=='':
@@ -174,6 +192,7 @@ class DurationInput(TabTextInput):
                     pass
             if self.text:
                 self.text='%.2f'%float(self.text)
+        super(DurationInput,self).on_focus(instance,value)
 
     def AutoDuration(self):
         return 'Duration'
@@ -192,8 +211,9 @@ class JobInput(TabTextInput):
 
     def OnKeyDown(self,keyboard,keycode=None,text=None,modifier=None,**kwargs):
         if keycode[0]==9 and modifier==[] and self.parent==self.parent.parent.parent.recordIndex[-1]:
-            self.parent.AddNewLog()
+            self.parent.parent.parent.AddLastLog()
             def focusNext(time=None):
+                self.focus=False
                 self.focus_next.focus=True
             Clock.schedule_once(focusNext,0.2)
         else:
@@ -269,6 +289,7 @@ class EndTimeInput(TextInput):
             return super(EndTimeInput,self).insert_text(substring,from_undo)
 
     def on_focus(self,instance,value):
+        Logger.info('INPUT: endinput is on focus')
         if value==True:
             if not re.match('[0-9]{4}-[0-9]{2}-[0-9]{2}',self.focus_previous.text):
                 self.focus_previous.focus=True

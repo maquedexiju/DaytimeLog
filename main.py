@@ -4,6 +4,7 @@ from kivy.clock import *
 from kivy.core.window import Window
 from kivy.uix.screenmanager import *
 from kivy.logger import Logger
+import kivy.metrics
 from includes.Today import *
 from includes.History import *
 from includes.Report import *
@@ -39,7 +40,7 @@ class DaytimeLogApp(App):
         self.screenManager.add_widget(self.historyView)
         self.screenManager.add_widget(self.reportView)
 
-        Window.size=375,667
+        Logger.info('SYS_INFO: window size, %d, %d'%(Window.width, Window.height))
         def resize(*args):
                 self.todayView.resize()
                 self.historyView.resize()
@@ -47,12 +48,28 @@ class DaytimeLogApp(App):
         Window.bind(on_resize=resize)
 
     def SysInit(self):
-        sys=platform.system()
-        if sys=='Window':
+        BASEPATH=''
+        userSystem=platform.system()
+        Logger.info('SYS_INFO: system %s'%str(platform.uname()))
+        if userSystem=='Window':
             pass
-        elif sys=='Linux':
-            pass
-        elif sys=='Darwin':
+        elif userSystem=='Linux' :#and re.search('arm',platform.machine())!=None:
+            #basepath
+            if getattr( sys, 'frozen', False ) :
+                BASEPATH=os.path.dirname(sys.executable)+'/'
+            else :
+                BASEPATH=''
+            self.sysArgs['BASEPATH']=BASEPATH
+            #filepath
+            self.sysArgs['FILEPATH']=os.path.abspath('..')+'/'
+            #size
+            self.sysArgs['WIDTH']=Window.width
+            self.sysArgs['HEIGHT']=Window.height
+            #open shortcut
+            self.sysArgs['DESKTOP']=False
+            #keyboard mode
+            Window.softinput_mode='below_target'
+        else:#elif userSystem=='Darwin':
             #basepath
             if getattr( sys, 'frozen', False ) :
                 BASEPATH=os.path.dirname(sys.executable)+'/'
@@ -64,6 +81,13 @@ class DaytimeLogApp(App):
             if not os.path.exists(filepath):
                 os.mkdir(filepath)
             self.sysArgs['FILEPATH']=filepath+'/'
+            #window size
+            Window.size=375,667
+            self.sysArgs['WIDTH']=kivy.metrics.dp(375)
+            self.sysArgs['HEIGHT']=kivy.metrics.dp(667)
+            #open shortcut
+            self.sysArgs['DESKTOP']=True
+        Logger.info('SYS_INFO: shortcut %s'%str(self.sysArgs['DESKTOP']))
         #database
         self.dataBase=DBDaytimeLog(self.sysArgs['FILEPATH'])
         self.sysArgs['DB']=self.dataBase
